@@ -19,9 +19,13 @@
   backgroundcolor=\color{listingbg},
   frame=single,
   rulecolor=\color{listingrule},
+  columns=fullflexible,
+  keepspaces=true,
   breaklines=true,
   showstringspaces=false,
-  tabsize=4
+  tabsize=4,
+  xleftmargin=0.5em,
+  xrightmargin=0.5em
 }
 
 \begin{document}
@@ -101,19 +105,22 @@ To conclude, this project shows a working AES implementation in Java using the J
 
 The implementation was not very large, but it still includes the main parts needed for a useful demonstration: key generation, encryption, decryption, a simple interface, and verification. I think this project was a good practical exercise because it connected the theory of symmetric cryptography with an actual working program.
 
-\section*{Appendix: Annotated Source Code}
-The following source files are included as a part of the submission. I added comments by keeping the code structure simple and by choosing descriptive names so that the program is easy to follow.
+\section*{Appendix: Source Code}
+The following source files are included in their current submitted form.
 
+\begingroup
+\singlespacing
 \subsection*{AesCryptoService.java}
-\lstinputlisting{../src/AesCryptoService.java}
+\lstinputlisting[language=Java]{../src/AesCryptoService.java}
 
 \subsection*{AesGuiApp.java}
-\lstinputlisting{../src/AesGuiApp.java}
+\lstinputlisting[language=Java]{../src/AesGuiApp.java}
 
 \subsection*{AesRoundTripCheck.java}
-\lstinputlisting{../src/AesRoundTripCheck.java}
+\lstinputlisting[language=Java]{../src/AesRoundTripCheck.java}
 
 \subsection*{AesServiceSelfTest.java}
-\lstinputlisting{../src/AesServiceSelfTest.java}
+\lstinputlisting[language=Java]{../src/AesServiceSelfTest.java}
+\endgroup
 
 \end{document}
