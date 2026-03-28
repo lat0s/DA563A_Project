@@ -1,71 +1,15 @@
-# AES Project 11
+# Project 11 AES Implementation
 
-This project is a small Java AES encryption and decryption assignment for the course `DA563A Introduction to Computer Security`.
+This submission was prepared by Georgios Panormitis Latos for the course DA563A Introduction to Computer Security, taught by Qinghua Wang. The date of submission is 28/03/2026.
 
-## Files
+The project contains four Java source files and the final PDF report. `AesCryptoService.java` handles AES key generation, encryption, and decryption. `AesGuiApp.java` provides the graphical interface. `AesRoundTripCheck.java` is a small check for the required assignment text. `AesServiceSelfTest.java` contains the tests used to verify that the program also works with other kinds of input.
 
-- `src/AesCryptoService.java`: AES key generation, encryption, and decryption logic
-- `src/AesGuiApp.java`: Swing GUI with Encrypt and Decrypt buttons
-- `src/AesRoundTripCheck.java`: quick command-line check for the required assignment text
-- `src/AesServiceSelfTest.java`: broader self-test for different kinds of text
-- `report/project11_report.tex`: LaTeX source for the final report
-- `report/project11_report.pdf`: compiled report PDF
+To compile the project, open a terminal in the project folder and run `javac src/*.java`.
 
-## How to Compile
+To start the program, run `java -cp src AesGuiApp`.
 
-From the project root:
+To verify the required assignment text, run `java -cp src AesRoundTripCheck`.
 
-```bash
-javac src/*.java
-```
+To run the broader tests, run `java -cp src AesServiceSelfTest`.
 
-## How to Run the GUI
-
-```bash
-java -cp src AesGuiApp
-```
-
-The window starts with the required text `Introduction to Computer Security` already loaded.
-
-## Quick Check
-
-This verifies the exact assignment message:
-
-```bash
-java -cp src AesRoundTripCheck
-```
-
-## Run the Self-Tests
-
-This checks that the project works with different types of text:
-
-- empty text
-- text with spaces
-- normal ASCII text
-- multiline text
-- punctuation and tabs
-- UTF-8 text
-- invalid ciphertext handling
-
-Run it with:
-
-```bash
-java -cp src AesServiceSelfTest
-```
-
-## Rebuild the Report PDF
-
-If `tectonic` is installed:
-
-```bash
-cd report
-tectonic project11_report.tex
-```
-
-## Regenerate the Report Screenshots
-
-From the project root:
-
-```bash
-java -Djava.awt.headless=true -cp src AesGuiApp --capture report/figures
-```
+The self test checks empty text, text with spaces, normal text, multiline text, punctuation and tabs, UTF 8 text, and invalid ciphertext handling.

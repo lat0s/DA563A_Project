@@ -298,7 +298,6 @@ public class AesGuiApp {
                 return;
             }
 
-            // The output area temporarily holds ciphertext, then shows plaintext again.
             String decryptedText = cryptoService.decrypt(ciphertext);
             outputArea.setText(decryptedText);
             showSuccess("Decryption completed successfully.");

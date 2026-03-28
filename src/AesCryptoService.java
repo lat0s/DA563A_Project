@@ -17,7 +17,6 @@ public class AesCryptoService {
     }
 
     public SecretKey generateKey() throws GeneralSecurityException {
-        // A fresh 128-bit key is enough for this classroom demonstration.
         KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM);
         keyGenerator.init(128);
         activeKey = keyGenerator.generateKey();
@@ -29,7 +28,6 @@ public class AesCryptoService {
             throw new IllegalArgumentException("Plaintext cannot be null.");
         }
 
-        // The plaintext is converted to UTF-8 bytes before encryption.
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.ENCRYPT_MODE, activeKey);
         byte[] encryptedBytes = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
@@ -41,7 +39,6 @@ public class AesCryptoService {
             throw new IllegalArgumentException("Ciphertext cannot be null.");
         }
 
-        // The GUI shows Base64 so the encrypted result is readable on screen.
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.DECRYPT_MODE, activeKey);
         byte[] ciphertextBytes = Base64.getDecoder().decode(base64Ciphertext);

@@ -8,21 +8,21 @@ public class AesServiceSelfTest {
                 "Generated key is 128 bits.");
 
         assertRoundTrip(cryptoService, "Introduction to Computer Security",
-                "Required assignment message round-trips correctly.");
+                "Required assignment message round trips correctly.");
         assertRoundTrip(cryptoService, "",
-                "Empty string round-trips correctly.");
+                "Empty string round trips correctly.");
         assertRoundTrip(cryptoService, "   leading and trailing spaces   ",
-                "Text with surrounding spaces round-trips correctly.");
+                "Text with surrounding spaces round trips correctly.");
         assertRoundTrip(cryptoService, "AES test message 123",
-                "Different ASCII input round-trips correctly.");
+                "Different ASCII input round trips correctly.");
         assertRoundTrip(cryptoService, "Kalimera cryptography",
-                "Plain text with different content round-trips correctly.");
+                "Plain text with different content round trips correctly.");
         assertRoundTrip(cryptoService, "Line 1\nLine 2\nLine 3",
-                "Multiline text round-trips correctly.");
+                "Multiline text round trips correctly.");
         assertRoundTrip(cryptoService, "Tabs\tspaces\tand punctuation !?.,:;()[]{}",
-                "Text with mixed spacing and punctuation round-trips correctly.");
-        assertRoundTrip(cryptoService, "UTF-8 test: cafe, naive, jalapeno, Georgios, ασφαλεια",
-                "UTF-8 text round-trips correctly.");
+                "Text with mixed spacing and punctuation round trips correctly.");
+        assertRoundTrip(cryptoService, "UTF 8 test: caf\u00e9, na\u00efve, jalape\u00f1o, r\u00e9sum\u00e9",
+                "UTF 8 text round trips correctly.");
 
         boolean invalidCiphertextRejected = false;
         try {
@@ -32,7 +32,7 @@ public class AesServiceSelfTest {
         }
         check(invalidCiphertextRejected, "Invalid ciphertext is rejected.");
 
-        System.out.println("All AES self-tests passed.");
+        System.out.println("All AES self tests passed.");
     }
 
     private static void assertRoundTrip(AesCryptoService cryptoService, String plainText, String message)

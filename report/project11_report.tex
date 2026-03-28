@@ -4,8 +4,6 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[a4paper,margin=1in]{geometry}
-\usepackage{graphicx}
-\usepackage{float}
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage{setspace}
@@ -52,51 +50,30 @@ In this project I implemented a small Java program that can perform AES encrypti
 
 The assignment for Project 11 was to write a program that can encrypt and decrypt a message with AES. The instructions also suggested that Java and the Java Cryptography Architecture could be used. For the demonstration part, the message \texttt{Introduction to Computer Security} had to be encrypted and then decrypted again with a key of my own choice.
 
-I selected Java because it already contains ready classes for cryptographic work, which made it possible to focus on how the program behaves instead of implementing the AES algorithm from the lowest level. I also added a simple graphical interface with text areas and buttons, so the result is easier to test and easier to show in screenshots.
+I selected Java because it already contains ready classes for cryptographic work, which made it possible to focus on how the program behaves instead of implementing the AES algorithm from the lowest level. I also added a simple graphical interface with text areas and buttons so that the program is easy to test.
 
 \section{Implementation}
-The implementation is divided into a small number of Java files. The class \texttt{AesCryptoService} is responsible for the actual cryptographic operations. It generates a 128-bit AES key with \texttt{KeyGenerator} and stores that key for the current program session. The program uses the transformation \texttt{AES/ECB/\allowbreak PKCS5Padding}. The same key is then reused for both encryption and decryption.
+The implementation is divided into a small number of Java files. The class \texttt{AesCryptoService} is responsible for the actual cryptographic operations. It generates a 128 bit AES key with \texttt{KeyGenerator} and stores that key for the current program session. The program uses the transformation \texttt{AES/ECB/\allowbreak PKCS5Padding}. The same key is then reused for both encryption and decryption.
 
-When the user presses the Encrypt button, the program reads the plaintext from the input area, converts it to UTF-8 bytes, and encrypts it. The encrypted bytes are then converted into Base64 text. I decided to show the result in Base64 instead of raw binary because it is much more readable in the user interface and in the screenshots. When the Decrypt button is pressed, the program reads the Base64 ciphertext, decodes it back into bytes, and decrypts it with the same AES key.
+When the user presses the Encrypt button, the program reads the plaintext from the input area, converts it to UTF 8 bytes, and encrypts it. The encrypted bytes are then converted into Base64 text. I decided to show the result in Base64 instead of raw binary because it is much more readable in the user interface. When the Decrypt button is pressed, the program reads the Base64 ciphertext, decodes it back into bytes, and decrypts it with the same AES key.
 
 The GUI was written with Swing because it is included in Java and does not need extra libraries. The interface contains one input text box, one output text box, one key field, and two buttons. There is also a small status line that tells the user whether the last action was successful or whether there was an error, for example if invalid ciphertext is entered for decryption.
 
-For this assignment I used ECB mode because it matches the lecture-oriented recommendation in the instructions. In real-world applications, ECB mode is usually not the best choice for larger or repeated data patterns, but for a short classroom demonstration with one message it is acceptable and it keeps the example easy to understand.
+For this assignment I used ECB mode because it matches the recommendation in the instructions. In real world applications, ECB mode is usually not the best choice for larger or repeated data patterns, but for a short classroom demonstration with one message it is acceptable and it keeps the example easy to understand.
 
 \section{Program Design and GUI}
 The program starts with the required sentence already placed in the input area, which makes the demonstration direct and simple. A new AES key is generated at startup, and the Base64 form of that key is displayed in the window so it is clear which key is being used during the session.
 
-The workflow is very basic. First, the user presses Encrypt. The program then shows the encrypted message in the output area. After that, the user can press Decrypt, and the original plaintext appears again. This makes it easy to confirm that the round-trip works correctly.
+The workflow is very basic. First, the user presses Encrypt. The program then shows the encrypted message in the output area. After that, the user can press Decrypt, and the original plaintext appears again. This makes it easy to confirm that the round trip works correctly.
 
-I also added a small command-line check class called \texttt{AesRoundTripCheck}. This file is useful because it verifies the same encryption and decryption logic without opening the GUI. In addition, the GUI class can generate screenshots automatically. This made it easier to create clean figures for the report and to repeat the process if needed.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.92\textwidth]{figures/gui-launch.png}
-    \caption{Program window at startup with the required plaintext already loaded.}
-    \label{fig:launch}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.92\textwidth]{figures/gui-encrypted.png}
-    \caption{The GUI after encryption, showing the generated AES key and the ciphertext in Base64 form.}
-    \label{fig:encrypted}
-\end{figure}
+I also added a small command line check class called \texttt{AesRoundTripCheck}. This file is useful because it verifies the same encryption and decryption logic without opening the GUI. I also added a second test file so that I could check how the program behaves with empty text, multiline text, punctuation, and UTF 8 text before submission.
 
 \section{Results and Discussion}
 The program worked as expected during testing. When the default message was encrypted, the program produced a Base64 ciphertext string in the output field. When that ciphertext was decrypted, the original text \texttt{Introduction to Computer Security} was recovered correctly.
 
-I also tested the program by compiling the Java files and running the command-line verification class. The round-trip check printed the original text, the encrypted text, the decrypted text, and finally a boolean result showing that the decrypted text matched the original exactly. I then added a small self-test file that checks several normal and edge cases, such as the required sentence, an empty string, a different input text, a Unicode string, and invalid ciphertext input. This gave me more confidence that the program logic was stable.
+I also tested the program by compiling the Java files and running the command line verification class. The round trip check printed the original text, the encrypted text, the decrypted text, and finally a boolean result showing that the decrypted text matched the original exactly. I then added a small self test file that checks several normal and edge cases, such as the required sentence, an empty string, a different input text, a Unicode string, and invalid ciphertext input. This gave me more confidence that the program logic was stable.
 
 The graphical interface also behaved correctly in the normal use case. The key was shown clearly, the Encrypt button generated ciphertext, and the Decrypt button recovered the plaintext again. If the user tried to decrypt invalid text, the program showed a small error message instead of crashing. That makes the program more robust even though it is still a simple assignment program.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.92\textwidth]{figures/gui-decrypted.png}
-    \caption{The GUI after decryption, where the original plaintext has been restored.}
-    \label{fig:decrypted}
-\end{figure}
 
 \section{Conclusion}
 To conclude, this project shows a working AES implementation in Java using the Java Cryptography Architecture. The program can encrypt and decrypt text successfully with the same secret key, and it demonstrates the required sentence from the assignment without difficulty.
