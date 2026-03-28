@@ -4,7 +4,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[a4paper,margin=1in]{geometry}
+\usepackage{array}
 \usepackage{xcolor}
+\usepackage{enumitem}
 \usepackage{listings}
 \usepackage{setspace}
 \usepackage{parskip}
@@ -26,13 +28,14 @@
 
 \begin{titlepage}
     \centering
-    \vspace*{2.5cm}
+    \vspace*{1.8cm}
     {\LARGE Project 11: AES Implementation\par}
-    \vspace{1.2cm}
+    \vspace{0.8cm}
     {\large A small Java program for AES encryption and decryption\par}
-    \vspace{2cm}
+    \vspace{1.8cm}
 
-    \begin{tabular}{ll}
+    \renewcommand{\arraystretch}{1.4}
+    \begin{tabular}{>{\bfseries}p{3.2cm}p{8.5cm}}
         Student Name: & Georgios Panormitis Latos \\
         Course: & DA563A Introduction to Computer Security \\
         Teacher: & Qinghua Wang \\
@@ -45,6 +48,11 @@
 
 \onehalfspacing
 
+\section{Overview}
+This report presents a small Java program that performs AES encryption and decryption. The project was made for Project 11 in the course material, where the main requirement was to encrypt the message \texttt{Introduction to Computer Security} and then decrypt it again with the same key.
+
+I used Java because it already provides the Java Cryptography Architecture, which makes it possible to build a working encryption program without implementing the AES algorithm from the lowest level. I also added a small Swing interface so the program is easier to use and test.
+
 \section{Introduction}
 In this project I implemented a small Java program that can perform AES encryption and decryption. AES stands for Advanced Encryption Standard and it is one of the most common symmetric encryption algorithms used today. In a symmetric cryptosystem, the same secret key is used both when data is encrypted and when it is decrypted again.
 
@@ -53,10 +61,13 @@ The assignment for Project 11 was to write a program that can encrypt and decryp
 I selected Java because it already contains ready classes for cryptographic work, which made it possible to focus on how the program behaves instead of implementing the AES algorithm from the lowest level. I also added a simple graphical interface with text areas and buttons so that the program is easy to test.
 
 \section{Implementation}
+\subsection{Program Structure}
 The implementation is divided into a small number of Java files. The class \texttt{AesCryptoService} is responsible for the actual cryptographic operations. It generates a 128 bit AES key with \texttt{KeyGenerator} and stores that key for the current program session. The program uses the transformation \texttt{AES/ECB/\allowbreak PKCS5Padding}. The same key is then reused for both encryption and decryption.
 
+\subsection{Encryption And Decryption}
 When the user presses the Encrypt button, the program reads the plaintext from the input area, converts it to UTF 8 bytes, and encrypts it. The encrypted bytes are then converted into Base64 text. I decided to show the result in Base64 instead of raw binary because it is much more readable in the user interface. When the Decrypt button is pressed, the program reads the Base64 ciphertext, decodes it back into bytes, and decrypts it with the same AES key.
 
+\subsection{Interface}
 The GUI was written with Swing because it is included in Java and does not need extra libraries. The interface contains one input text box, one output text box, one key field, and two buttons. There is also a small status line that tells the user whether the last action was successful or whether there was an error, for example if invalid ciphertext is entered for decryption.
 
 For this assignment I used ECB mode because it matches the recommendation in the instructions. In real world applications, ECB mode is usually not the best choice for larger or repeated data patterns, but for a short classroom demonstration with one message it is acceptable and it keeps the example easy to understand.
@@ -74,6 +85,16 @@ The program worked as expected during testing. When the default message was encr
 I also tested the program by compiling the Java files and running the command line verification class. The round trip check printed the original text, the encrypted text, the decrypted text, and finally a boolean result showing that the decrypted text matched the original exactly. I then added a small self test file that checks several normal and edge cases, such as the required sentence, an empty string, a different input text, a Unicode string, and invalid ciphertext input. This gave me more confidence that the program logic was stable.
 
 The graphical interface also behaved correctly in the normal use case. The key was shown clearly, the Encrypt button generated ciphertext, and the Decrypt button recovered the plaintext again. If the user tried to decrypt invalid text, the program showed a small error message instead of crashing. That makes the program more robust even though it is still a simple assignment program.
+
+The main results can be summarized in a simple way:
+
+\begin{itemize}[leftmargin=1.6em]
+    \item The required assignment text was encrypted successfully.
+    \item The ciphertext could be decrypted back to the original message.
+    \item The GUI worked correctly for normal user input.
+    \item The program also handled empty text, multiline text, punctuation, and UTF 8 text in the self test.
+    \item Invalid ciphertext input was rejected instead of causing the program to crash.
+\end{itemize}
 
 \section{Conclusion}
 To conclude, this project shows a working AES implementation in Java using the Java Cryptography Architecture. The program can encrypt and decrypt text successfully with the same secret key, and it demonstrates the required sentence from the assignment without difficulty.

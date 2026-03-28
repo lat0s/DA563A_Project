@@ -2,18 +2,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -26,12 +19,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 public class AesGuiApp {
     private static final String DEFAULT_MESSAGE = "Introduction to Computer Security";
-    private static final Dimension CAPTURE_SIZE = new Dimension(920, 700);
+    private static final Dimension WINDOW_SIZE = new Dimension(920, 700);
     private static final Color BACKGROUND_COLOR = new Color(245, 247, 250);
     private static final Color PANEL_COLOR = Color.WHITE;
     private static final Color SUCCESS_COLOR = new Color(24, 110, 57);
@@ -66,18 +58,6 @@ public class AesGuiApp {
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length >= 2 && "--capture".equals(args[0])) {
-            Path outputDirectory = Path.of(args[1]);
-            SwingUtilities.invokeAndWait(() -> {
-                try {
-                    captureScreenshots(outputDirectory);
-                } catch (Exception exception) {
-                    throw new RuntimeException(exception);
-                }
-            });
-            return;
-        }
-
         SwingUtilities.invokeLater(() -> {
             try {
                 AesGuiApp app = new AesGuiApp();
@@ -86,51 +66,6 @@ public class AesGuiApp {
                 throw new RuntimeException(exception);
             }
         });
-    }
-
-    private static void captureScreenshots(Path outputDirectory) throws Exception {
-        Files.createDirectories(outputDirectory);
-
-        // Each screenshot uses a fresh app instance so the state is predictable.
-        AesGuiApp initialApp = new AesGuiApp();
-        saveComponentImage(initialApp.createRootPanel(), outputDirectory.resolve("gui-launch.png"));
-
-        AesGuiApp encryptedApp = new AesGuiApp();
-        encryptedApp.encryptCurrentInput();
-        saveComponentImage(encryptedApp.createRootPanel(), outputDirectory.resolve("gui-encrypted.png"));
-
-        AesGuiApp decryptedApp = new AesGuiApp();
-        decryptedApp.encryptCurrentInput();
-        decryptedApp.decryptCurrentOutput();
-        saveComponentImage(decryptedApp.createRootPanel(), outputDirectory.resolve("gui-decrypted.png"));
-    }
-
-    private static void saveComponentImage(JComponent component, Path outputPath) throws IOException {
-        component.setSize(CAPTURE_SIZE);
-        component.doLayout();
-        layoutRecursively(component);
-
-        // Render the Swing component directly into an image file for the report.
-        BufferedImage image = new BufferedImage(
-                CAPTURE_SIZE.width,
-                CAPTURE_SIZE.height,
-                BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics = image.createGraphics();
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        component.paint(graphics);
-        graphics.dispose();
-
-        ImageIO.write(image, "png", outputPath.toFile());
-    }
-
-    private static void layoutRecursively(JComponent component) {
-        for (java.awt.Component child : component.getComponents()) {
-            child.doLayout();
-            if (child instanceof JComponent childComponent) {
-                layoutRecursively(childComponent);
-            }
-        }
     }
 
     private JTextArea createTextArea(boolean editable) {
@@ -149,6 +84,7 @@ public class AesGuiApp {
         JFrame frame = new JFrame("AES Encryption and Decryption");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setContentPane(createRootPanel());
+        frame.setPreferredSize(WINDOW_SIZE);
         frame.pack();
         frame.setMinimumSize(new Dimension(860, 660));
         frame.setLocationRelativeTo(null);
@@ -157,7 +93,7 @@ public class AesGuiApp {
 
     private JComponent createRootPanel() {
         JPanel rootPanel = new JPanel(new BorderLayout(0, 18));
-        rootPanel.setPreferredSize(CAPTURE_SIZE);
+        rootPanel.setPreferredSize(WINDOW_SIZE);
         rootPanel.setBorder(BorderFactory.createEmptyBorder(22, 22, 22, 22));
         rootPanel.setBackground(BACKGROUND_COLOR);
         rootPanel.add(createHeaderPanel(), BorderLayout.NORTH);
